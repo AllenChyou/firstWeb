@@ -40,4 +40,8 @@
   <!-- Activate Avalon Bridge -->
   <avalon:bridge/>
 
+  <bean>
+    <bean id="flightService" class="com.zzj.flight.service.DummyFlightService" />
+  </bean>
+
 </beans>
