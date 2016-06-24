@@ -1,1 +1,3 @@
-# firstWeb
+#### firstWeb
+
+Web programming exercise project
