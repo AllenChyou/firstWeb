@@ -1,7 +1,5 @@
 package com.zzj.plan;
 
-import com.sun.tools.javac.util.Assert;
-
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +13,6 @@ public class Flight {
     private BigDecimal totalCost;
 
     public Flight(List<FlightLeg> legs, BigDecimal totalCost) {
-        Assert.checkNonNull(legs);
 
         this.legs = legs;
         this.totalCost = totalCost;
@@ -52,7 +49,7 @@ public class Flight {
     /**
      * @return number of milliseconds for total travel time
      */
-    public void getTotalTravelTime() {
+    public long getTotalTravelTime() {
         Date start = getFirstLeg().getDepartOn();
         Date end = getLastLeg().getArriveOn();
 

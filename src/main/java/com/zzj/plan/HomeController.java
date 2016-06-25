@@ -1,8 +1,12 @@
 package com.zzj.plan;
 
 import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
+import org.springframework.web.servlet.HttpServletBean;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.AbstractController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by zhangzhoujian on 6/24/16.
@@ -22,5 +26,9 @@ public class HomeController extends AbstractController {
     }
 
     @Override
-    protected ModelAndView handleRequestInternal(StandardMultipartHttpServletRequest)
+    protected ModelAndView handleRequestInternal(HttpServletRequest req, HttpServletResponse res) throws Exception {
+        ModelAndView mav = new ModelAndView("Home");
+        mav.addObject("specials", flights.getSpecialDeals());
+        return  mav;
+    }
 }
