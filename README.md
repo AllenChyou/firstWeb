@@ -1,3 +1,3 @@
-#### firstWeb
+#### ssmdemo
 
-Web programming exercise project
+Spring SpringMVC MyBatis的简单整合
