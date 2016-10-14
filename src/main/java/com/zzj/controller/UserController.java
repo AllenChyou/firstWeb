@@ -2,6 +2,7 @@ package com.zzj.controller;
 
 import com.zzj.model.User;
 import com.zzj.service.UserService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -23,6 +24,8 @@ import java.util.Map;
 @RequestMapping(value = "/mgt")
 public class UserController {
 
+    private static final Logger logger = Logger.getLogger(UserController.class);
+
     @Autowired
     private UserService userService;
 
@@ -34,6 +37,7 @@ public class UserController {
         for (User user : userList) {
             stringBuilder.append(user.getUserId() + " : " + user.getUserName() + "\n");
         }
+        logger.info("getUsers");
         return ResponseEntity.ok(stringBuilder.toString());
     }
 
@@ -43,7 +47,7 @@ public class UserController {
         User user = userService.getUser(userId);
         rsp.put("userId", user.getUserId());
         rsp.put("userName", user.getUserName());
-
+        logger.info("getUserByID");
         return ResponseEntity.ok(rsp.toString());
     }
 }
