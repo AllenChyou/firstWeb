@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -30,24 +31,59 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public ResponseEntity getUsers(HttpServletRequest request, Model model) {
-        Map<String, Object> rsp = new HashMap<String, Object>();
+    public ResponseEntity<Object> getUsers(HttpServletRequest request, Model model) {
+        Map<String, Object> rsp = new HashMap<>();
         List<User> userList = userService.getUsers();
-        StringBuilder stringBuilder = new StringBuilder();
-        for (User user : userList) {
-            stringBuilder.append(user.getUserId() + " : " + user.getUserName() + "\n");
-        }
+
+        rsp.put("error", 0);
+        rsp.put("data", userList);
         logger.info("getUsers");
-        return ResponseEntity.ok(stringBuilder.toString());
+        return ResponseEntity.ok(rsp);
     }
 
     @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-    public ResponseEntity getUser(HttpServletRequest request, Model model, @PathVariable("id") Integer userId) {
-        Map<String, Object> rsp = new HashMap<String, Object>();
+    public ResponseEntity<Object> getUser(HttpServletRequest request, Model model, @PathVariable("id") Integer userId) {
+        Map<String, Object> rsp = new HashMap();
         User user = userService.getUser(userId);
+
         rsp.put("userId", user.getUserId());
         rsp.put("userName", user.getUserName());
         logger.info("getUserByID");
-        return ResponseEntity.ok(rsp.toString());
+        return ResponseEntity.ok(rsp);
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    public ResponseEntity<Object> createUser(@RequestBody User bodyUser) {
+        Map<String, Object> rsp = new HashMap();
+        User user = new User();
+        user.setUserId(bodyUser.getUserId());
+        user.setUserName(bodyUser.getUserName());
+        int result = userService.addUser(user);
+
+        rsp.put("error", result);
+        return ResponseEntity.ok(rsp);
+    }
+
+    @RequestMapping(value = "/user/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Object> deleteUser(@PathVariable("id") Integer userId) {
+        Map<String, Object> rsp = new HashMap();
+
+        int result = userService.deleteUser(userId);
+        rsp.put("error", result);
+        return ResponseEntity.ok(rsp);
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.PUT)
+    public ResponseEntity<Object> updateUser(@RequestBody User bodyUser){
+        Map<String, Object> rsp = new HashMap();
+
+        User user = new User();
+        user.setUserId(bodyUser.getUserId());
+        user.setUserName(bodyUser.getUserName());
+
+        int result = userService.updateUser(user);
+
+        rsp.put("error", result);
+        return ResponseEntity.ok(rsp);
     }
 }
